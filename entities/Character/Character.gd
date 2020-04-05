@@ -13,14 +13,14 @@ var velocity = Vector2.ZERO
 var rotation_velocity = 0
 
 var move_to_target = false
-var target_position = position
+var target_position
 
 func move(delta: float):
   var acceleration = drag_factor * velocity.length_squared() * -velocity.normalized()
   var rotation_acceleration = rotation_drag_factor * pow(rotation_velocity, 2) * -sign(rotation_velocity)
 
-  if move_to_target:
-    var position_diff = target_position - position
+  if move_to_target and target_position:
+    var position_diff = target_position - global_position
     var rotation_diff = get_angle_to(target_position)
 
     if position_diff.length_squared() > pow(movement_accuracy, 2):
@@ -44,7 +44,7 @@ func _input(event):
     move_to_target = event.pressed
 
   if event is InputEventScreenTouch or event is InputEventScreenDrag:
-    target_position = event.position
+    target_position = get_global_mouse_position()
 
 func _physics_process(delta):
   move(delta)
