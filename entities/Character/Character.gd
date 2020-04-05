@@ -1,15 +1,50 @@
 extends Node2D
 
+export (float) var acceleration_factor = 10
+export (float) var drag_factor = 0.05
+export (float) var movement_accuracy = 20
+
+export (float) var max_rotation_acceleration_factor = 100
+export (float) var min_rotation_acceleration_factor = 10
+export (float) var rotation_drag_factor = 2
+export (float) var rotation_accuracy = 10
+
+var velocity = Vector2.ZERO
+var rotation_velocity = 0
+
 var move_to_target = false
-var target = transform
+var target_position = position
+
+func move(delta: float):
+  var acceleration = drag_factor * velocity.length_squared() * -velocity.normalized()
+  var rotation_acceleration = rotation_drag_factor * pow(rotation_velocity, 2) * -sign(rotation_velocity)
+
+  if move_to_target:
+    var position_diff = target_position - position
+    var rotation_diff = get_angle_to(target_position)
+
+    if position_diff.length_squared() > pow(movement_accuracy, 2):
+      if abs(rotation_diff) > deg2rad(rotation_accuracy):
+        rotation_acceleration += max(max_rotation_acceleration_factor / max(velocity.length(), 1), min_rotation_acceleration_factor) * rotation_diff
+
+      var forwards = transform.basis_xform(Vector2.RIGHT).normalized()
+      var forwards_acceleration = forwards.dot(acceleration_factor * position_diff)
+
+      if forwards_acceleration > 0:
+        acceleration += forwards_acceleration * forwards
+
+  velocity += delta * acceleration
+  rotation_velocity += delta * rotation_acceleration
+
+  translate(delta * velocity)
+  rotate(delta * rotation_velocity)
 
 func _input(event):
   if event is InputEventScreenTouch:
     move_to_target = event.pressed
 
   if event is InputEventScreenTouch or event is InputEventScreenDrag:
-    target = Transform2D(event.position.angle_to_point(position), event.position)
+    target_position = event.position
 
-func _process(_delta):
-  if move_to_target:
-    transform = transform.interpolate_with(target, 0.1)
+func _physics_process(delta):
+  move(delta)
