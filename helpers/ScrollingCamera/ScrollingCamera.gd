@@ -3,7 +3,7 @@ extends Camera2D
 export (NodePath) var target
 export (float) var margin = 150
 
-var scroll_factor = 100
+var scroll_factor = 200
 
 var target_node
 

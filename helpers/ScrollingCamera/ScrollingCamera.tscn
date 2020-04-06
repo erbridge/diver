@@ -5,6 +5,7 @@
 [node name="ScrollingCamera" type="Camera2D"]
 limit_smoothed = true
 smoothing_enabled = true
+smoothing_speed = 0.5
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
