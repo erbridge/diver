@@ -8,7 +8,7 @@ var scroll_factor = 200
 var target_node
 
 
-func ensure_target_visibility(delta):
+func ensure_target_visibility(delta: float) -> void:
 	if not target_node:
 		return
 
@@ -34,11 +34,11 @@ func ensure_target_visibility(delta):
 		position += scroll_factor * delta * Vector2.UP
 
 
-func _ready():
+func _ready() -> void:
 	if target:
 		target_node = get_node(target)
 
 
-func _process(delta):
+func _process(delta: float) -> void:
 	if current:
 		ensure_target_visibility(delta)

@@ -15,7 +15,7 @@ var rotation_velocity = 0
 var move_to_target = false
 
 
-func move(delta: float):
+func move(delta: float) -> void:
 	var acceleration = drag_factor * velocity.length_squared() * -velocity.normalized()
 	var rotation_acceleration = (
 		rotation_drag_factor
@@ -52,10 +52,10 @@ func move(delta: float):
 	rotate(delta * rotation_velocity)
 
 
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
-		move_to_target = event.pressed
+		move_to_target = (event as InputEventScreenTouch).pressed
 
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	move(delta)
