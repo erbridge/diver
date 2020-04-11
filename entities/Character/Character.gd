@@ -31,7 +31,7 @@ var _rotation_velocity := 0.0
 var _move_to_target := false
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		_move_to_target = (event as InputEventScreenTouch).pressed
 
