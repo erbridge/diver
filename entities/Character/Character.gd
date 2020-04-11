@@ -41,37 +41,56 @@ func _physics_process(delta: float) -> void:
 
 
 func _move(delta: float) -> void:
-	var acceleration = drag_factor * _velocity.length_squared() * -_velocity.normalized()
-	var rotation_acceleration = (
-		rotation_drag_factor
-		* pow(_rotation_velocity, 2)
-		* -sign(_rotation_velocity)
-	)
-
-	if _move_to_target:
-		var target_position = get_global_mouse_position()
-
-		var position_diff = target_position - global_position
-		var rotation_diff = get_angle_to(target_position)
-
-		if position_diff.length_squared() > pow(movement_accuracy, 2):
-			if abs(rotation_diff) > deg2rad(rotation_accuracy):
-				rotation_acceleration += (
-					max(
-						max_rotation_acceleration_factor / max(_velocity.length(), 1),
-						min_rotation_acceleration_factor
-					)
-					* rotation_diff
-				)
-
-			var forwards = transform.basis_xform(Vector2.RIGHT).normalized()
-			var forwards_acceleration = acceleration_factor * forwards.dot(position_diff)
-
-			if forwards_acceleration > 0:
-				acceleration += forwards_acceleration * forwards
+	var acceleration = _calculate_acceleration()
+	var rotation_acceleration = _calculate_rotation_acceleration()
 
 	_velocity += delta * acceleration
 	_rotation_velocity += delta * rotation_acceleration
 
 	translate(delta * _velocity)
 	rotate(delta * _rotation_velocity)
+
+
+func _calculate_acceleration() -> Vector2:
+	var acceleration = drag_factor * _velocity.length_squared() * -_velocity.normalized()
+
+	if _move_to_target:
+		var position_delta = _get_position_delta()
+
+		if position_delta.length_squared() > pow(movement_accuracy, 2):
+			var forwards = transform.basis_xform(Vector2.RIGHT).normalized()
+			var forwards_acceleration = acceleration_factor * forwards.dot(position_delta)
+
+			if forwards_acceleration > 0:
+				acceleration += forwards_acceleration * forwards
+
+	return acceleration
+
+
+func _calculate_rotation_acceleration() -> float:
+	var acceleration = rotation_drag_factor * pow(_rotation_velocity, 2) * -sign(_rotation_velocity)
+
+	if _move_to_target:
+		var position_delta = _get_position_delta()
+		var rotation_delta = _get_rotation_delta()
+
+		if (
+			position_delta.length_squared() > pow(movement_accuracy, 2)
+			and abs(rotation_delta) > deg2rad(rotation_accuracy)
+		):
+			var acceleration_factor = max(
+				max_rotation_acceleration_factor / max(_velocity.length(), 1),
+				min_rotation_acceleration_factor
+			)
+
+			acceleration += acceleration_factor * rotation_delta
+
+	return acceleration
+
+
+func _get_position_delta() -> Vector2:
+	return get_global_mouse_position() - global_position
+
+
+func _get_rotation_delta() -> float:
+	return get_angle_to(get_global_mouse_position())
