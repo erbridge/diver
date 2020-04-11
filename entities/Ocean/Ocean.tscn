@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://entities/Ocean/Ocean.png" type="Texture" id=1]
+
+[node name="Ocean" type="Node2D"]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 10, 1 )
+texture = ExtResource( 1 )
