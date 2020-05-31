@@ -5,8 +5,8 @@ extends Node2D
 # govern its movement. It accelerates towards the current screen position of
 # the touch input, while it's still touched, and carries forwards its momentum
 # when the input ends, with no further acceleration.
-
-# The character only every linearly accelerates in its forwards direction, and
+#
+# The character only ever linearly accelerates in its forwards direction, and
 # it rotates to point towards its destination as it moves. The linear
 # acceleration is at its maximum when the character is pointed directly at its
 # target, and 0 when pointed directly away, causing tit to speed up as it
