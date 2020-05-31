@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/Ocean/Ocean.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/Sky/Sky.tscn" type="PackedScene" id=3]
+
+[node name="WorldBackground" type="Node2D"]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sky" parent="." instance=ExtResource( 3 )]
+
+[node name="Ocean" parent="." instance=ExtResource( 1 )]
