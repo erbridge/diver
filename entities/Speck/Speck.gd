@@ -16,6 +16,6 @@ func _ready():
 #	pass
 
 func _on_Speck_area_entered(area):
-	print("hit 2")
+	print("collected a speck")
 	if (area.get_name() == "Character"):
 		self.hide()
