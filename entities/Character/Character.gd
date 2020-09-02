@@ -78,7 +78,7 @@ func _calculate_rotation_acceleration() -> float:
 			position_delta.length_squared() > pow(movement_accuracy, 2)
 			and abs(rotation_delta) > deg2rad(rotation_accuracy)
 		):
-			var acceleration_factor = max(
+			acceleration_factor = max(
 				max_rotation_acceleration_factor / max(_velocity.length(), 1),
 				min_rotation_acceleration_factor
 			)
