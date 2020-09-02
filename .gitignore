@@ -3,3 +3,4 @@
 /.import/
 /exports/*
 !/exports/.gdignore
+/.mono/*
