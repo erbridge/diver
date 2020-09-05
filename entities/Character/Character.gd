@@ -38,6 +38,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	_move(delta)
+	_updateTint()
 
 
 func _move(delta: float) -> void:
@@ -94,3 +95,7 @@ func _get_position_delta() -> Vector2:
 
 func _get_rotation_delta() -> float:
 	return get_angle_to(get_global_mouse_position())
+
+func _updateTint() -> void:
+	var brightness = max(0.3, min(1.0, 1 - global_position.y/1900))
+	get_node("Sprite").self_modulate = Color(brightness, brightness, brightness, 1)
