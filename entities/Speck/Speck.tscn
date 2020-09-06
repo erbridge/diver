@@ -7,7 +7,7 @@
 radius = 3.54422
 
 [node name="Speck" type="Area2D"]
-position = Vector2( 200, 600 )
+position = Vector2( 300, 1700 )
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
