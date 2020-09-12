@@ -15,6 +15,7 @@ func _process(delta: float) -> void:
 	if current:
 		_ensure_target_visibility(delta)
 		_update_zoom_level()
+		_restrict_to_allowed_area()
 
 func _ensure_target_visibility(delta: float) -> void:
 	if not _target_node:
@@ -45,3 +46,22 @@ func _update_zoom_level() -> void:
 	var pos = _diver.global_position.y
 	var newZoom = lerp(1, 3, max(min(pos/1900, 1), 0))
 	self.zoom = Vector2(newZoom, newZoom)
+
+func _restrict_to_allowed_area() -> void:
+	
+	var size = get_viewport_rect().size
+	
+	var maxTop    = - 600 + size.y * zoom.y * 0.5
+	var maxBottom =  2000 - size.y * zoom.y * 0.5
+	var maxLeft   = -1750 + size.x * zoom.x * 0.5
+	var maxRight  =  1750 - size.x * zoom.x * 0.5
+	
+	if (position.y < maxTop):
+		position.y = maxTop
+	elif (position.y > maxBottom):
+		position.y = maxBottom
+		
+	if (position.x < maxLeft):
+		position.x = maxLeft
+	elif (position.x > maxRight):
+		position.x = maxRight
