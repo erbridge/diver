@@ -34,12 +34,16 @@ __meta__ = {
 }
 
 [node name="Sprite_1" type="Sprite" parent="Dark"]
-position = Vector2( -1256, 0 )
+position = Vector2( -1884, 1000 )
+scale = Vector2( 1.5, 3 )
 texture = ExtResource( 2 )
 
 [node name="Sprite_2" type="Sprite" parent="Dark"]
+position = Vector2( 0, 1000 )
+scale = Vector2( 1.5, 3 )
 texture = ExtResource( 2 )
 
 [node name="Sprite_3" type="Sprite" parent="Dark"]
-position = Vector2( 1256, 0 )
+position = Vector2( 1884, 1000 )
+scale = Vector2( 1.5, 3 )
 texture = ExtResource( 2 )

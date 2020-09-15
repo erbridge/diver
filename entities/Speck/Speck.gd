@@ -22,7 +22,7 @@ func _ready() -> void:
 
 func _process(delta) -> void:
 	time_spent += delta
-	var xWidth = 350.0 + sin(time_spent * 0.8) * 50.0
-	var yWidth = 180.0 + sin(time_spent) * 30.0
+	var xWidth = 550.0 + sin(time_spent * 0.8) * 100.0
+	var yWidth = 330.0 + sin(time_spent) * 60.0
 	position.x = center_pos.x + sin(time_spent * 1.5) * xWidth
 	position.y = center_pos.y + cos(time_spent * 0.5) * yWidth + sin(time_spent) * 50.0

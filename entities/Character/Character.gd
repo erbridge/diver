@@ -85,17 +85,17 @@ func _calculate_rotation_acceleration() -> float:
 			)
 
 			acceleration += acceleration_factor * rotation_delta
-
 	return acceleration
-
 
 func _get_position_delta() -> Vector2:
 	return get_global_mouse_position() - global_position
-
 
 func _get_rotation_delta() -> float:
 	return get_angle_to(get_global_mouse_position())
 
 func _updateTint() -> void:
-	var brightness = max(0.3, min(1.0, 1 - global_position.y/1900))
+	var brightness = max(0.15, min(1.0, 1 - global_position.y/6000))
 	get_node("Sprite").self_modulate = Color(brightness, brightness, brightness, 1)
+	
+func _process(delta) -> void:
+	print (position.x, ", ", position.y)

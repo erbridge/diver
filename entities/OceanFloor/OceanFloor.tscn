@@ -9,12 +9,13 @@ __meta__ = {
 }
 
 [node name="Sprite_1" type="Sprite" parent="."]
-position = Vector2( -1256, 0 )
+position = Vector2( -1256, 7000 )
 texture = ExtResource( 1 )
 
 [node name="Sprite_2" type="Sprite" parent="."]
+position = Vector2( 0, 7000 )
 texture = ExtResource( 1 )
 
 [node name="Sprite_3" type="Sprite" parent="."]
-position = Vector2( 1256, 0 )
+position = Vector2( 1256, 7000 )
 texture = ExtResource( 1 )

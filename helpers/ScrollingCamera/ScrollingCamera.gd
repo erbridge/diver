@@ -44,7 +44,7 @@ func _ensure_target_visibility(delta: float) -> void:
 
 func _update_zoom_level() -> void:
 	var pos = _diver.global_position.y
-	var newZoom = lerp(1, 3, max(min(pos/1900, 1), 0))
+	var newZoom = lerp(1, 8, max(min(pos/6000, 1), 0))
 	self.zoom = Vector2(newZoom, newZoom)
 
 func _restrict_to_allowed_area() -> void:
@@ -52,7 +52,7 @@ func _restrict_to_allowed_area() -> void:
 	var size = get_viewport_rect().size
 	
 	var maxTop    = - 600 + size.y * zoom.y * 0.5
-	var maxBottom =  2000 - size.y * zoom.y * 0.5
+	var maxBottom =  9050 - size.y * zoom.y * 0.5
 	var maxLeft   = -1750 + size.x * zoom.x * 0.5
 	var maxRight  =  1750 - size.x * zoom.x * 0.5
 	
