@@ -29,17 +29,19 @@ export var rotation_accuracy := 10.0
 var _velocity := Vector2.ZERO
 var _rotation_velocity := 0.0
 var _move_to_target := false
+var _adjust_lighting := false
+var _time_to_adjust := 2.0
+var _time_spent_adjusting := 0.0
+var _max_darkness := 0.15
 
 ## _unhandled_input if we don't wanna capture UI events
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		_move_to_target = (event as InputEventScreenTouch).pressed
 
-
 func _physics_process(delta: float) -> void:
 	_move(delta)
 	_updateTint()
-
 
 func _move(delta: float) -> void:
 	var acceleration = _calculate_acceleration()
@@ -50,7 +52,6 @@ func _move(delta: float) -> void:
 
 	translate(delta * _velocity)
 	rotate(delta * _rotation_velocity)
-
 
 func _calculate_acceleration() -> Vector2:
 	var acceleration = drag_factor * _velocity.length_squared() * -_velocity.normalized()
@@ -66,7 +67,6 @@ func _calculate_acceleration() -> Vector2:
 				acceleration += forwards_acceleration * forwards
 
 	return acceleration
-
 
 func _calculate_rotation_acceleration() -> float:
 	var acceleration = rotation_drag_factor * pow(_rotation_velocity, 2) * -sign(_rotation_velocity)
@@ -94,8 +94,17 @@ func _get_rotation_delta() -> float:
 	return get_angle_to(get_global_mouse_position())
 
 func _updateTint() -> void:
-	var brightness = max(0.15, min(1.0, 1 - global_position.y/6000))
+	var brightness = max(_max_darkness, min(1.0, 1 - global_position.y/6000))
 	get_node("Sprite").self_modulate = Color(brightness, brightness, brightness, 1)
 	
 func _process(delta) -> void:
 	print (position.x, ", ", position.y)
+	if (_adjust_lighting):
+		_time_spent_adjusting += delta
+		var progress = min(1.0, _time_spent_adjusting / _time_to_adjust)
+		_max_darkness = 0.15 + 0.4 * progress
+		if (progress == 1.0):
+			_adjust_lighting = false
+
+func brighten_world() -> void:
+	_adjust_lighting = true
