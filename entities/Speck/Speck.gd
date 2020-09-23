@@ -10,6 +10,7 @@ func _on_Speck_area_entered(area):
 		var main = get_tree().get_root().get_node("Main")
 		main.get_plant_ui().start_fade_in()
 		main.set_plant(position)
+		main.brighten_world()
 		for child in get_children():
 			child.queue_free()
 		queue_free()
@@ -17,7 +18,7 @@ func _on_Speck_area_entered(area):
 func _ready() -> void:
 	rnd.seed = hash(OS.get_system_time_msecs())
 	var randX = 0.0##rnd.randf_range(0, 3000) - 1500
-	var randY = rnd.randf_range(0, 150) + 1400
+	var randY = rnd.randf_range(0, 150) + 8000
 	center_pos = Vector2(randX, randY)
 
 func _process(delta) -> void:
