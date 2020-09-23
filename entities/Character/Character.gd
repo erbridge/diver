@@ -51,6 +51,7 @@ func _move(delta: float) -> void:
 	_rotation_velocity += delta * rotation_acceleration
 
 	translate(delta * _velocity)
+	position.y = max(-50.0, position.y)
 	rotate(delta * _rotation_velocity)
 
 func _calculate_acceleration() -> Vector2:
@@ -88,7 +89,9 @@ func _calculate_rotation_acceleration() -> float:
 	return acceleration
 
 func _get_position_delta() -> Vector2:
-	return get_global_mouse_position() - global_position
+	var pos = get_global_mouse_position()
+	##pos.y = max(0.0, pos.y)
+	return pos - global_position
 
 func _get_rotation_delta() -> float:
 	return get_angle_to(get_global_mouse_position())
