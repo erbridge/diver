@@ -26,6 +26,8 @@ export var min_rotation_acceleration_factor := 10.0
 export var rotation_drag_factor := 2.0
 export var rotation_accuracy := 10.0
 
+onready var _main = get_parent() 
+
 var _velocity := Vector2.ZERO
 var _rotation_velocity := 0.0
 var _move_to_target := false
@@ -56,6 +58,10 @@ func _move(delta: float) -> void:
 
 	translate(delta * _velocity)
 	position.y = max(-50.0, position.y)
+	if (_main.is_darkmode && position.x < -50):
+		position.x = -50
+	elif (_main.is_darkmode && position.x > 50):
+		position.x = 50
 	rotate(delta * _rotation_velocity)
 
 func _calculate_acceleration() -> Vector2:

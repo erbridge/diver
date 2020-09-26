@@ -4,6 +4,7 @@ var _plantUI
 var _lightOcean
 var _lightSky
 var _character
+var is_darkmode := true
 onready var _plant = preload("res://entities/Plants/Plant.tscn")
 
 # Called when the node enters the scene tree for the first time.
@@ -12,12 +13,14 @@ func _ready() -> void:
 	_lightOcean = get_node("WorldBackground/Ocean/LightMode")
 	_lightSky = get_node("WorldBackground/Sky/LightMode")
 	_character = get_node("Character")
+	is_darkmode = true
 	load_game()
 
 func brighten_world() -> void:
 	_lightOcean.start_fade()
 	_lightSky.start_fade()
 	_character.brighten_world()
+	is_darkmode = false
 
 func get_plant_ui() -> Node2D:
 	return _plantUI
