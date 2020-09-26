@@ -27,4 +27,5 @@ position = Vector2( 0, 700 )
 [node name="ScrollingCamera" parent="." instance=ExtResource( 2 )]
 current = true
 target = NodePath("../Character")
+margin = 300.0
 [connection signal="area_entered" from="Speck" to="Speck" method="_on_Speck_area_entered"]

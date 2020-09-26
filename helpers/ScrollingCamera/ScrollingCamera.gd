@@ -4,7 +4,7 @@ extends Camera2D
 # The camera position updates during `_process`.
 
 onready var _diver = get_parent().get_node("Character")
-const SCROLL_FACTOR := 200
+const SCROLL_FACTOR := 300
 
 export var target := NodePath()
 export var margin := 150.0
