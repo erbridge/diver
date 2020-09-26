@@ -49,9 +49,11 @@ func _physics_process(delta: float) -> void:
 	_move(delta)
 	_updateTint()
 
+var _did_reach_min_rotation = false
+
 func _move(delta: float) -> void:
-	var acceleration = _calculate_acceleration()
-	var rotation_acceleration = _calculate_rotation_acceleration()
+	var acceleration = _calculate_acceleration(get_global_mouse_position())
+	var rotation_acceleration = _calculate_rotation_acceleration(get_global_mouse_position())
 
 	_velocity += delta * acceleration
 	_rotation_velocity += delta * rotation_acceleration
@@ -63,12 +65,23 @@ func _move(delta: float) -> void:
 	elif (_main.is_darkmode && position.x > 50):
 		position.x = 50
 	rotate(delta * _rotation_velocity)
+	
+	print(position.y)
+		
+	if ((_main.is_darkmode && position.y < 7500 && rotation < 0) ||
+	   (_main.is_darkmode && position.y < 7500 && rotation > 2) ||
+	   (_main.is_darkmode && position.y < 7500 && rotation < 1 && _did_reach_min_rotation)):
+		var targetPos = get_global_mouse_position()
+		targetPos.x = 0
+		rotation_acceleration = _calculate_rotation_acceleration(targetPos)
+		_rotation_velocity += delta * rotation_acceleration
+		rotate(delta * _rotation_velocity)
 
-func _calculate_acceleration() -> Vector2:
+func _calculate_acceleration(var target) -> Vector2:
 	var acceleration = drag_factor * _velocity.length_squared() * -_velocity.normalized()
 
 	if _move_to_target:
-		var position_delta = _get_position_delta()
+		var position_delta = _get_position_delta(target)
 
 		if position_delta.length_squared() > pow(movement_accuracy, 2):
 			var forwards = transform.basis_xform(Vector2.RIGHT).normalized()
@@ -79,12 +92,12 @@ func _calculate_acceleration() -> Vector2:
 
 	return acceleration
 
-func _calculate_rotation_acceleration() -> float:
+func _calculate_rotation_acceleration(var target) -> float:
 	var acceleration = rotation_drag_factor * pow(_rotation_velocity, 2) * -sign(_rotation_velocity)
 
 	if _move_to_target:
-		var position_delta = _get_position_delta()
-		var rotation_delta = _get_rotation_delta()
+		var position_delta = _get_position_delta(target)
+		var rotation_delta = _get_rotation_delta(target)
 
 		if (
 			position_delta.length_squared() > pow(movement_accuracy, 2)
@@ -98,13 +111,13 @@ func _calculate_rotation_acceleration() -> float:
 			acceleration += acceleration_factor * rotation_delta
 	return acceleration
 
-func _get_position_delta() -> Vector2:
-	var pos = get_global_mouse_position()
+func _get_position_delta(var target) -> Vector2:
+	var pos = target
 	##pos.y = max(0.0, pos.y)
 	return pos - global_position
 
-func _get_rotation_delta() -> float:
-	return get_angle_to(get_global_mouse_position())
+func _get_rotation_delta(var target) -> float:
+	return get_angle_to(target)
 
 func _updateTint() -> void:
 	var brightness = max(_max_darkness, min(1.0, 1 - global_position.y/6000))
