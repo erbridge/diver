@@ -33,6 +33,10 @@ var _adjust_lighting := false
 var _time_to_adjust := 2.0
 var _time_spent_adjusting := 0.0
 var _max_darkness := 0.15
+var _bob_time := 0.0
+var _bob_strength := 0.75
+
+var _unbobbed_position
 
 ## _unhandled_input if we don't wanna capture UI events
 func _input(event: InputEvent) -> void:
@@ -101,13 +105,24 @@ func _updateTint() -> void:
 	get_node("Sprite").self_modulate = Color(brightness, brightness, brightness, 1)
 	
 func _process(delta) -> void:
-	print (position.x, ", ", position.y)
 	if (_adjust_lighting):
 		_time_spent_adjusting += delta
 		var progress = min(1.0, _time_spent_adjusting / _time_to_adjust)
 		_max_darkness = 0.15 + 0.4 * progress
 		if (progress == 1.0):
 			_adjust_lighting = false
+	if (!Input.is_action_pressed("mouse_0_held")):
+		_bob_time += delta
+		do_bob()
 
 func brighten_world() -> void:
 	_adjust_lighting = true
+
+func do_bob() -> void:
+	if (position.y <= 75):
+		var offset = sin(_bob_time * 1.5) * _bob_strength
+		position.y += offset
+	else:
+		var offset = sin(_bob_time * 1) * _bob_strength * 0.75
+		position.x += offset
+	
