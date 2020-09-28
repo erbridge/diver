@@ -54,11 +54,14 @@ var _did_reach_min_rotation = false
 func _move(delta: float) -> void:
 	var acceleration = _calculate_acceleration(get_global_mouse_position())
 	var rotation_acceleration = _calculate_rotation_acceleration(get_global_mouse_position())
+	var speed_modifier = 1
+	if _main.is_darkmode:
+		speed_modifier = 0.5
 
 	_velocity += delta * acceleration
 	_rotation_velocity += delta * rotation_acceleration
 
-	translate(delta * _velocity)
+	translate(delta * _velocity * speed_modifier)
 	position.y = max(-50.0, position.y)
 	if (_main.is_darkmode && position.x < -50):
 		position.x = -50
@@ -89,7 +92,7 @@ func _calculate_acceleration(var target) -> Vector2:
 
 			if forwards_acceleration > 0:
 				acceleration += forwards_acceleration * forwards
-
+				
 	return acceleration
 
 func _calculate_rotation_acceleration(var target) -> float:
