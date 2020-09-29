@@ -43,14 +43,15 @@ func get_closest_spot(var position) -> Node2D:
 				continue
 			
 			var distance = position.distance_to(spot.global_position)
-			for i in range(closestSpots.count()):
+			for i in range(closestSpots.size()):
 				var stored_distance = position.distance_to(closestSpots[i].global_position)
 				if distance < stored_distance:
 					closestSpots.insert(i, spot)
 					break
-				closestSpots.append(spot)
+					
+			closestSpots.append(spot)
 	
-	if (closestSpots.count() > 0):
+	if (closestSpots.size() > 0):
 		return closestSpots[0] as Node2D
 	else:
 		return null

@@ -35,6 +35,9 @@ func start_fade_in() -> void:
 	_plant_sprite.show()
 
 func _start_waiting() -> void:
+	if !_fading_in:
+		return
+		
 	_time_in_phase = 0.0
 	_fading_in = false
 	_fading_out = false

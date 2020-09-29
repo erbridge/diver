@@ -8,6 +8,7 @@ export var _shrink_speed = 1.0
 
 var dragging = false
 var click_radius = 32 # Size of the sprite.
+onready var _main = get_tree().get_root().get_node("Main")
 
 func _ready() -> void:
 	scale = Vector2.ZERO
@@ -58,7 +59,13 @@ func _input(event):
 		# Stop dragging if the button is released.
 		if dragging and not event.pressed:
 			dragging = false
-			get_tree().get_root().get_node("Main").save_game()
+			
+			var node = _main._garden.get_closest_spot(position)
+			if node != null:
+				position = node.get_global_position()
+				node.add_child(self)
+			
+			_main.save_game()
 
 	if event is InputEventMouseMotion and dragging:
 		# While dragging, move the sprite with the mouse.
