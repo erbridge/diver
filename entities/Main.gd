@@ -1,10 +1,11 @@
 extends Node2D
 
 var _plantUI
+var _character
+var _garden
 var _lightOcean
 var _lightSky
 var _lightForeground
-var _character
 var is_darkmode := true
 onready var _plant = preload("res://entities/Plants/Plant.tscn")
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	_lightSky = get_node("WorldBackground/Sky/LightMode")
 	_lightForeground = get_node("WorldForeground/OceanFloor/LightMode")
 	_character = get_node("Character")
+	_garden = get_node("Garden")
 	is_darkmode = true
 	load_game()
 

@@ -10,7 +10,7 @@ var _time_for_wait := 5.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_plant_sprite = get_node("MarginContainer/TextureRect")
+	_plant_sprite = get_node("Container")
 	_plant_sprite.hide()
 	
 func _process(delta) -> void:
@@ -19,10 +19,6 @@ func _process(delta) -> void:
 		_set_fade(_time_in_phase / _time_for_fade)
 		if (_time_in_phase == _time_for_fade):
 			_start_waiting()
-	elif _waiting:
-		_time_in_phase = min(_time_in_phase + delta, _time_for_wait)
-		if (_time_in_phase == _time_for_wait):
-			start_fade_out()
 	elif _fading_out:
 		_time_in_phase = min(_time_in_phase + delta, _time_for_fade)
 		_set_fade(1.0 - _time_in_phase / _time_for_fade)
