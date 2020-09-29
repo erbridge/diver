@@ -2,9 +2,13 @@ extends Node2D
 
 onready var _spot_template
 var _spots
+export var _fadein_time := 1.0
+var _timespent = 0.0
+var _is_appearing = false
 
 func _ready():
 	_spot_template = get_node("Spot")
+	modulate.a = 0
 	
 	_spots = []
 	for x in range(21):
@@ -55,3 +59,15 @@ func get_closest_spot(var position) -> Node2D:
 		return closestSpots[0] as Node2D
 	else:
 		return null
+
+func appear() -> void:
+	_is_appearing = true
+	
+func _process(var delta) -> void:
+	if !_is_appearing:
+		return
+	
+	_timespent += delta
+	modulate.a = min(1.0, _timespent / _fadein_time)
+	if (modulate.a == 1.0):
+		_is_appearing = false

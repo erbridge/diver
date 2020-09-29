@@ -25,6 +25,7 @@ func brighten_world() -> void:
 	_lightSky.start_fade()
 	_lightForeground.start_fade()
 	_character.brighten_world()
+	_garden.appear()
 	is_darkmode = false
 
 func get_plant_ui() -> Node2D:
