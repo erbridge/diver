@@ -40,10 +40,13 @@ func _start_waiting() -> void:
 	_waiting = true
 
 func start_fade_out() -> void:
+	if !_waiting:
+		return
+	
 	_time_in_phase = 0.0
 	_waiting = false
 	_fading_in = false
 	_fading_out = true
 
 func _set_fade(alpha) -> void:
-	_plant_sprite.self_modulate = Color(1, 1, 1, alpha)
+	_plant_sprite.modulate = Color(1, 1, 1, alpha)

@@ -17,3 +17,7 @@ func _ready() -> void:
 func _process(var delta) -> void:
 	_timeSpent += delta
 	set_rotation(sin((_timeSpent + _offset) * _speed) * _strength)
+
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+		get_tree().get_root().get_node("Main").get_plant_ui().start_fade_out()
