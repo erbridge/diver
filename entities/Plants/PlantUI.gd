@@ -1,12 +1,13 @@
 extends CanvasLayer
 
 var _plant_sprite
-var _fading_in := false
-var _fading_out := false
-var _waiting := false
-var _time_in_phase := 0.0
-var _time_for_fade := 2.0
-var _time_for_wait := 5.0
+var _fading_in = false
+var _fading_out = false
+var _waiting = false
+var _time_in_phase = 0.0
+export var _time_for_fade_in := 2.0
+export var _time_for_fade_out := 2.0
+export var _time_for_wait := 5.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -15,14 +16,14 @@ func _ready() -> void:
 	
 func _process(delta) -> void:
 	if _fading_in:
-		_time_in_phase = min(_time_in_phase + delta, _time_for_fade)
-		_set_fade(_time_in_phase / _time_for_fade)
-		if (_time_in_phase == _time_for_fade):
+		_time_in_phase = min(_time_in_phase + delta, _time_for_fade_in)
+		_set_fade(_time_in_phase / _time_for_fade_in)
+		if (_time_in_phase == _time_for_fade_in):
 			_start_waiting()
 	elif _fading_out:
-		_time_in_phase = min(_time_in_phase + delta, _time_for_fade)
-		_set_fade(1.0 - _time_in_phase / _time_for_fade)
-		if (_time_in_phase == _time_for_fade):
+		_time_in_phase = min(_time_in_phase + delta, _time_for_fade_out)
+		_set_fade(1.0 - _time_in_phase / _time_for_fade_out)
+		if (_time_in_phase == _time_for_fade_out):
 			_fading_out = false
 			_plant_sprite.hide()
 	
@@ -47,6 +48,9 @@ func start_fade_out() -> void:
 	_waiting = false
 	_fading_in = false
 	_fading_out = true
+
+func is_waiting() -> bool:
+	return _waiting
 
 func _set_fade(alpha) -> void:
 	_plant_sprite.modulate = Color(1, 1, 1, alpha)

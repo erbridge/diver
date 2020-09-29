@@ -69,8 +69,6 @@ func _move(delta: float) -> void:
 		position.x = 50
 	rotate(delta * _rotation_velocity)
 	
-	print(position.y)
-		
 	if ((_main.is_darkmode && position.y < 7500 && rotation < 0) ||
 	   (_main.is_darkmode && position.y < 7500 && rotation > 2) ||
 	   (_main.is_darkmode && position.y < 7500 && rotation < 1 && _did_reach_min_rotation)):

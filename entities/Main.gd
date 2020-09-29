@@ -36,6 +36,15 @@ func set_plant(pos) -> void:
 	p.position = pos
 	p.add_to_group("persist")
 	save_game()
+	
+func set_plant_with_scale(pos, scale) -> void:
+	var p = _plant.instance()
+	add_child(p)
+	p.position = pos
+	p.add_to_group("persist")
+	p.set_scale(4.0)
+	p.set_dragging()
+	save_game()
 
 func save_game() -> void:
 	var save_game = File.new()
