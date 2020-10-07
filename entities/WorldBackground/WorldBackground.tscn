@@ -9,6 +9,6 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Sky" parent="." instance=ExtResource( 3 )]
-
 [node name="Ocean" parent="." instance=ExtResource( 1 )]
+
+[node name="Sky" parent="." instance=ExtResource( 3 )]
