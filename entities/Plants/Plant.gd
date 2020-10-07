@@ -6,9 +6,13 @@ var _accumulated_scale = 0
 export var _growth_speed = 0.2
 export var _shrink_speed = 1.0
 
+var _target_scale = 1.0
 var dragging = false
 var click_radius = 32 # Size of the sprite.
 onready var _main = get_tree().get_root().get_node("Main")
+
+var _baby_flower = preload("res://entities/Plants/BabyPlant.png")
+var _full_flower = preload("res://entities/Plants/FullGrownPlant.png")
 
 func _ready() -> void:
 	scale = Vector2.ZERO
@@ -24,17 +28,19 @@ func set_scale(var target) -> void:
 func _process(delta) -> void:
 	if _is_growing:
 		_accumulated_scale += delta * _growth_speed
-		if (_accumulated_scale >= 1.0):
-			_accumulated_scale = 1.0
+		if (_accumulated_scale >= _target_scale):
+			_accumulated_scale = _target_scale
 			_is_growing = false
 			
 		scale = Vector2.ONE * _accumulated_scale
 	
 	if _is_shrinking:
 		_accumulated_scale -= delta * _shrink_speed
-		if (_accumulated_scale <= 1.0):
-			_accumulated_scale = 1.0
+		if (_accumulated_scale <= _target_scale):
+			_accumulated_scale = _target_scale
 			_is_shrinking = false
+			if _target_scale == 0.0:
+				_do_swap()
 			
 		scale = Vector2.ONE * _accumulated_scale
 
@@ -64,9 +70,17 @@ func _input(event):
 			if node != null:
 				position = node.get_global_position()
 				node.add_child(self)
+				node.self_modulate.a = 0.0
+				_is_shrinking = true
+				_target_scale = 0.0
 			
 			_main.save_game()
 
 	if event is InputEventMouseMotion and dragging:
 		# While dragging, move the sprite with the mouse.
 		position = get_global_mouse_position()
+
+func _do_swap() -> void:
+	texture = _baby_flower
+	_is_growing = true
+	_target_scale = 1.0

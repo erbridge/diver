@@ -10,6 +10,9 @@ var _screensize
 export var _spawnDelay := 0.0
 
 func _ready() -> void:
+	_update_position()
+	
+func _update_position() -> void:
 	_screensize = get_viewport().get_visible_rect().size
 	var position = Vector2.ZERO
 	position.x = _screensize.x / 2.0
@@ -19,6 +22,9 @@ func _ready() -> void:
 func _process(var delta) -> void:
 	_timeSpent += delta
 	set_rotation(sin((_timeSpent + _offset) * _speed) * _strength)
+	
+	if get_viewport().get_visible_rect().size.x != _screensize.x:
+		_update_position()
 
 func _input(event):
 	if !_main.get_plant_ui().is_waiting():

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Baby Plant.png-3b8589df6d97f52b609f45f44ae18b14.stex"
+path="res://.import/FullGrownPlant.png-4d9dedd5d91054dfc5c33c19fa57d496.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/Plants/Baby Plant.png"
-dest_files=[ "res://.import/Baby Plant.png-3b8589df6d97f52b609f45f44ae18b14.stex" ]
+source_file="res://entities/Plants/FullGrownPlant.png"
+dest_files=[ "res://.import/FullGrownPlant.png-4d9dedd5d91054dfc5c33c19fa57d496.stex" ]
 
 [params]
 
