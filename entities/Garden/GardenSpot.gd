@@ -9,7 +9,7 @@ func init () -> void:
 		var nodePos = get_global_position()
 		var plantPos = plants[i].get_global_position()
 		if (nodePos.x == plantPos.x && nodePos.y == plantPos.y):
-			_plant = plants[i]
+			add_plant(plants[i])
 			return;
 	
 func remove_plant(var plant) -> void:
