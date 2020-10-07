@@ -8,6 +8,7 @@ var _lightSky
 var _darkSky
 var _lightForeground
 var is_darkmode := true
+var _has_inited_garden = false
 onready var _plant = preload("res://entities/Plants/Plant.tscn")
 
 # Called when the node enters the scene tree for the first time.
@@ -21,6 +22,11 @@ func _ready() -> void:
 	_garden = get_node("Garden")
 	is_darkmode = true
 	load_game()
+	
+func _process(var delta) -> void:
+	if !_has_inited_garden:
+		_has_inited_garden = true
+		_garden.init()
 
 func brighten_world() -> void:
 	_darkOcean.start_fade()
@@ -38,7 +44,6 @@ func set_plant(pos) -> void:
 	var p = _plant.instance()
 	add_child(p)
 	p.position = pos
-	p.add_to_group("persist")
 	save_game()
 	
 func set_plant_with_scale(pos, scale) -> void:
@@ -46,6 +51,7 @@ func set_plant_with_scale(pos, scale) -> void:
 	add_child(p)
 	p.position = pos
 	p.add_to_group("persist")
+	p.add_to_group("plants")
 	p.set_scale(4.0)
 	p.set_dragging()
 	save_game()
@@ -83,7 +89,7 @@ func load_game() -> void:
 	# during loading. This will vary wildly depending on the needs of a
 	# project, so take care with this step.
 	# For our example, we will accomplish this by deleting saveable objects.
-	var save_nodes = get_tree().get_nodes_in_group("Persist")
+	var save_nodes = get_tree().get_nodes_in_group("persist")
 	for i in save_nodes:
 		i.queue_free()
 

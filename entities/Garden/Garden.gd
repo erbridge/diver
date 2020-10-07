@@ -7,7 +7,7 @@ var _timespent = 0.0
 var _is_appearing = false
 
 func _ready():
-	_spot_template = get_node("Spot")
+	_spot_template = get_node("Spot") as GardenSpot
 	modulate.a = 0
 	
 	_spots = []
@@ -62,6 +62,13 @@ func get_closest_spot(var position) -> Node2D:
 
 func appear() -> void:
 	_is_appearing = true
+	
+func init() -> void:
+	for i in range (0, _spots.size()):
+		for j in range (0, _spots[i].size()):
+			if _spots[i][j] == null:
+				continue
+			(_spots[i][j] as GardenSpot).init()
 	
 func _process(var delta) -> void:
 	if !_is_appearing:
