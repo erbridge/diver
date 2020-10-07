@@ -43,7 +43,7 @@ func get_closest_spot(var position) -> Node2D:
 				
 			## if the spot is taken, stop checking
 			var spot = _spots[x][y]
-			if spot.get_child_count() > 0:
+			if spot.has_plant():
 				continue
 			
 			var distance = position.distance_to(spot.global_position)

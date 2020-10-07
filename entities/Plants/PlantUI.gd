@@ -18,12 +18,12 @@ func _process(delta) -> void:
 	if _fading_in:
 		_time_in_phase = min(_time_in_phase + delta, _time_for_fade_in)
 		_set_fade(_time_in_phase / _time_for_fade_in)
-		if (_time_in_phase == _time_for_fade_in):
+		if (_time_in_phase >= _time_for_fade_in - 0.001):
 			_start_waiting()
 	elif _fading_out:
 		_time_in_phase = min(_time_in_phase + delta, _time_for_fade_out)
 		_set_fade(1.0 - _time_in_phase / _time_for_fade_out)
-		if (_time_in_phase == _time_for_fade_out):
+		if (_time_in_phase >= _time_for_fade_out - 0.001):
 			_fading_out = false
 			_plant_sprite.hide()
 	
@@ -45,6 +45,8 @@ func _start_waiting() -> void:
 
 func start_fade_out() -> void:
 	if !_waiting:
+		return
+	if _plant_sprite.modulate.a == 0.0:
 		return
 	
 	_time_in_phase = 0.0

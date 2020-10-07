@@ -17,6 +17,8 @@ func remove_plant(var plant) -> void:
 	self_modulate.a = 1.0
 	
 func add_plant(var plant) -> void:
-	add_child(plant)
 	_plant = plant
 	self_modulate.a = 0.0
+
+func has_plant() -> bool:
+	return (_plant != null)
