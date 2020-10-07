@@ -35,7 +35,7 @@ func _ready():
 
 func get_closest_spot(var position) -> Node2D:
 	var closestSpots = []
-	for x in range(20):
+	for x in range(21):
 		for y in range (10):
 			## if there's no spot, stop checking
 			if _spots[x][y] == null:

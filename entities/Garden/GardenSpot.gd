@@ -8,7 +8,8 @@ func init () -> void:
 	for i in range (0, plants.size()):
 		var nodePos = get_global_position()
 		var plantPos = plants[i].get_global_position()
-		if (nodePos.x == plantPos.x && nodePos.y == plantPos.y):
+		if (nodePos.x >= plantPos.x - 0.001 && nodePos.x <= plantPos.x + 0.001 &&
+			nodePos.y >= plantPos.y - 0.001 && nodePos.y <= plantPos.y + 0.001):
 			add_plant(plants[i])
 			return;
 	
