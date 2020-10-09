@@ -16,10 +16,12 @@ func init () -> void:
 func remove_plant(var plant) -> void:
 	_plant = null
 	self_modulate.a = 1.0
+	plant.set_spot(null)
 	
 func add_plant(var plant) -> void:
 	_plant = plant
 	self_modulate.a = 0.0
+	plant.set_spot(self)
 
 func has_plant() -> bool:
 	return (_plant != null)

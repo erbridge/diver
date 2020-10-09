@@ -18,12 +18,10 @@ var _baby_flower = preload("res://entities/Plants/BabyPlant.png")
 var _full_flower = preload("res://entities/Plants/FullGrownPlant.png")
 
 func _ready() -> void:
-	print("ready")
 	scale = Vector2.ZERO
 	_is_growing = true
 	if !is_in_group("plants"):
 		add_to_group("plants")
-	
 	
 func set_scale(var target) -> void:
 	_is_growing = false
@@ -86,7 +84,6 @@ func _input(event):
 			if node != null:
 				position = node.get_global_position()
 				node.add_plant(self)
-				_node = node
 				_is_shrinking = true
 				_target_scale = 0.0
 			
@@ -96,13 +93,15 @@ func _input(event):
 		# While dragging, move the sprite with the mouse.
 		position = get_global_mouse_position()
 
+func set_spot(var node) -> void:
+	_node = node
+	
 func _do_swap() -> void:
 	texture = _baby_flower
 	_is_growing = true
 	_target_scale = 1.0
 
 func start_new_plant() -> void:
-	print("start")
 	add_to_group("persist")
 	add_to_group("plants")
 	set_scale(4.0)
