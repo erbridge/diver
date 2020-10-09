@@ -6,6 +6,7 @@ var _accumulated_scale = 0
 export var _growth_speed = 0.2
 export var _shrink_speed = 1.0
 var _node
+var creation_time = 0
 
 var _target_scale = 1.0
 var dragging = false
@@ -20,6 +21,9 @@ func _ready() -> void:
 	_is_growing = true
 	if !is_in_group("plants"):
 		add_to_group("plants")
+	
+	if creation_time <= OS.get_unix_time() - 1:
+		_do_swap()
 	
 func set_scale(var target) -> void:
 	_is_growing = false
@@ -52,7 +56,8 @@ func save() -> Dictionary:
 		"filename" : get_filename(),
 		"parent" : get_parent().get_path(),
 		"pos_x" : position.x, # Vector2 is not supported by JSON
-		"pos_y" : position.y
+		"pos_y" : position.y,
+		"creation_time" : creation_time
 	}
 	return dict
 	
@@ -65,9 +70,9 @@ func _input(event):
 			# Start dragging if the click is on the sprite.
 			if not dragging and event.pressed:
 				dragging = true
-			
 			if _node != null:
 				_node.remove_plant(self)
+				
 		# Stop dragging if the button is released.
 		if dragging and not event.pressed:
 			dragging = false
@@ -90,3 +95,10 @@ func _do_swap() -> void:
 	texture = _baby_flower
 	_is_growing = true
 	_target_scale = 1.0
+
+func start_new_plant() -> void:
+	add_to_group("persist")
+	add_to_group("plants")
+	set_scale(4.0)
+	set_dragging()
+	creation_time = OS.get_unix_time()

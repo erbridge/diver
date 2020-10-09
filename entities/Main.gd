@@ -50,10 +50,7 @@ func set_plant_with_scale(pos, scale) -> void:
 	var p = _plant.instance()
 	add_child(p)
 	p.position = pos
-	p.add_to_group("persist")
-	p.add_to_group("plants")
-	p.set_scale(4.0)
-	p.set_dragging()
+	p.start_new_plant()
 	save_game()
 
 func save_game() -> void:
@@ -105,6 +102,8 @@ func load_game() -> void:
 		get_node(node_data["parent"]).add_child(new_object)
 		new_object.add_to_group("persist")
 		new_object.position = Vector2(node_data["pos_x"], node_data["pos_y"])
+		if (node_data.has("creation_time")):
+			new_object.creation_time = node_data["creation_time"]
 
 		# Now we set the remaining variables.
 #		for i in node_data.keys():
