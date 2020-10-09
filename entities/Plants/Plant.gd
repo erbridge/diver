@@ -32,9 +32,7 @@ func set_scale(var target) -> void:
 	
 func _process(delta) -> void:
 	if !_has_inited:
-		_has_inited = true
-		if (creation_time <= OS.get_unix_time() - 1):
-			_do_swap()
+		_initialize()
 		
 	if _is_growing:
 		_accumulated_scale += delta * _growth_speed
@@ -54,6 +52,11 @@ func _process(delta) -> void:
 			
 		scale = Vector2.ONE * _accumulated_scale
 
+func _initialize() -> void:
+	_has_inited = true
+	if (creation_time <= OS.get_unix_time() - 1):
+		_do_swap()
+	
 func save() -> Dictionary:
 	var dict = {
 		"filename" : get_filename(),
@@ -97,7 +100,10 @@ func set_spot(var node) -> void:
 	_node = node
 	
 func _do_swap() -> void:
-	texture = _baby_flower
+	if (creation_time <= OS.get_unix_time() - 600):
+		texture = _full_flower
+	else:
+		texture = _baby_flower
 	_is_growing = true
 	_target_scale = 1.0
 
