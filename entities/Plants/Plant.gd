@@ -12,18 +12,18 @@ var _target_scale = 1.0
 var dragging = false
 var click_radius = 32 # Size of the sprite.
 onready var _main = get_tree().get_root().get_node("Main")
+var _has_inited = false
 
 var _baby_flower = preload("res://entities/Plants/BabyPlant.png")
 var _full_flower = preload("res://entities/Plants/FullGrownPlant.png")
 
 func _ready() -> void:
+	print("ready")
 	scale = Vector2.ZERO
 	_is_growing = true
 	if !is_in_group("plants"):
 		add_to_group("plants")
 	
-	if creation_time <= OS.get_unix_time() - 1:
-		_do_swap()
 	
 func set_scale(var target) -> void:
 	_is_growing = false
@@ -33,6 +33,11 @@ func set_scale(var target) -> void:
 	_is_shrinking = true
 	
 func _process(delta) -> void:
+	if !_has_inited:
+		_has_inited = true
+		if (creation_time <= OS.get_unix_time() - 1):
+			_do_swap()
+		
 	if _is_growing:
 		_accumulated_scale += delta * _growth_speed
 		if (_accumulated_scale >= _target_scale):
@@ -97,6 +102,7 @@ func _do_swap() -> void:
 	_target_scale = 1.0
 
 func start_new_plant() -> void:
+	print("start")
 	add_to_group("persist")
 	add_to_group("plants")
 	set_scale(4.0)
