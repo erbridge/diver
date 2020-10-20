@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://entities/Character/Character.gd"
+}, {
 "base": "Sprite",
 "class": "GardenSpot",
 "language": "GDScript",
 "path": "res://entities/Garden/GardenSpot.gd"
 } ]
 _global_script_class_icons={
+"Character": "",
 "GardenSpot": ""
 }
 
@@ -37,6 +43,7 @@ gdscript/warnings/unsafe_call_argument=true
 
 window/size/width=600
 window/size/height=1024
+window/handheld/orientation="portrait"
 
 [input]
 
