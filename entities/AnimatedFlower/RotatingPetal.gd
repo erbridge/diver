@@ -30,9 +30,9 @@ func _input(event):
 	if !_main.get_plant_ui().is_waiting():
 		return
 		
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+	if event is InputEventScreenTouch:
 		get_tree().get_root().get_node("Main").get_plant_ui().start_fade_out()
-		var pos = get_global_mouse_position()
+		var pos = get_canvas_transform().affine_inverse().xform(event.position)
 		pos.x -= _screensize.x / 2.0
 		pos.y -= _screensize.y / 2.0
 		get_tree().get_root().get_node("Main").set_plant_with_scale(pos, 4.0)

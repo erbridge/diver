@@ -9,28 +9,34 @@
 
 [node name="PlantUI" type="CanvasLayer"]
 script = ExtResource( 2 )
+_time_for_fade_in = 1.0
+_time_for_fade_out = 1.0
 
 [node name="Container" type="Node2D" parent="."]
 
 [node name="petals3" type="Sprite" parent="Container"]
+scale = Vector2( 2, 2 )
 texture = ExtResource( 4 )
 script = ExtResource( 6 )
 _offset = 16.0
 _strength = 2.0
 
 [node name="petals2" type="Sprite" parent="Container"]
+scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 script = ExtResource( 6 )
 _offset = 8.0
 _strength = 1.2
 
 [node name="petals1" type="Sprite" parent="Container"]
+scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 script = ExtResource( 6 )
 _offset = 4.0
 _strength = 0.6
 
 [node name="face" type="Sprite" parent="Container"]
+scale = Vector2( 2, 2 )
 texture = ExtResource( 3 )
 script = ExtResource( 6 )
 _strength = 0.1

@@ -71,8 +71,9 @@ func set_dragging() -> void:
 	dragging = true
 
 func _input(event):
+	var touchPos = get_canvas_transform().affine_inverse().xform(event.position)
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
-		if (get_global_mouse_position() - position).length() < click_radius:
+		if (touchPos - position).length() < click_radius:
 			# Start dragging if the click is on the sprite.
 			if not dragging and event.pressed:
 				dragging = true
@@ -94,7 +95,7 @@ func _input(event):
 
 	if event is InputEventMouseMotion and dragging:
 		# While dragging, move the sprite with the mouse.
-		position = get_global_mouse_position()
+		position = touchPos
 
 func set_spot(var node) -> void:
 	_node = node

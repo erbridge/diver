@@ -34,16 +34,19 @@ var _move_to_target := false
 var _adjust_lighting := false
 var _time_to_adjust := 2.0
 var _time_spent_adjusting := 0.0
-var _max_darkness := 0.15
+var _max_darkness := 0.4
 var _bob_time := 0.0
 var _bob_strength := 0.75
 
 var _unbobbed_position
+var _is_bright_world = false
+var _touchPos
 
 ## _unhandled_input if we don't wanna capture UI events
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		_move_to_target = (event as InputEventScreenTouch).pressed
+	_touchPos = get_canvas_transform().affine_inverse().xform(event.position)
 
 func _physics_process(delta: float) -> void:
 	_move(delta)
@@ -52,8 +55,8 @@ func _physics_process(delta: float) -> void:
 var _did_reach_min_rotation = false
 
 func _move(delta: float) -> void:
-	var acceleration = _calculate_acceleration(get_global_mouse_position())
-	var rotation_acceleration = _calculate_rotation_acceleration(get_global_mouse_position())
+	var acceleration = _calculate_acceleration(_touchPos)
+	var rotation_acceleration = _calculate_rotation_acceleration(_touchPos)
 	var speed_modifier = 1
 	if _main.is_darkmode:
 		speed_modifier = 0.5
@@ -72,7 +75,7 @@ func _move(delta: float) -> void:
 	if ((_main.is_darkmode && position.y < 7500 && rotation < 0) ||
 	   (_main.is_darkmode && position.y < 7500 && rotation > 2) ||
 	   (_main.is_darkmode && position.y < 7500 && rotation < 1 && _did_reach_min_rotation)):
-		var targetPos = get_global_mouse_position()
+		var targetPos = _touchPos
 		targetPos.x = 0
 		rotation_acceleration = _calculate_rotation_acceleration(targetPos)
 		_rotation_velocity += delta * rotation_acceleration
@@ -121,14 +124,17 @@ func _get_rotation_delta(var target) -> float:
 	return get_angle_to(target)
 
 func _updateTint() -> void:
-	var brightness = max(_max_darkness, min(1.0, 1 - global_position.y/6000))
+	var darkness = _max_darkness
+	if _is_bright_world:
+		darkness = 0.6
+	var brightness = max(darkness, min(1.0, 1 - global_position.y/6000))
 	get_node("Sprite").self_modulate = Color(brightness, brightness, brightness, 1)
 	
 func _process(delta) -> void:
 	if (_adjust_lighting):
 		_time_spent_adjusting += delta
 		var progress = min(1.0, _time_spent_adjusting / _time_to_adjust)
-		_max_darkness = 0.15 + 0.4 * progress
+		_max_darkness = 0.4 + 0.2 * progress
 		if (progress == 1.0):
 			_adjust_lighting = false
 	if (!Input.is_action_pressed("mouse_0_held")):

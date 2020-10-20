@@ -17,13 +17,14 @@ func _process(delta) -> void:
 		if _fadeOut:
 			var progress = max(1.0 - _timeSpent / _timeToFade, 0.0)
 			modulate.a = progress
-			if (progress == 0.0):
+			if (_timeSpent >= _timeToFade):
 				_doFade = false
 		else:
 			var progress = min(_timeSpent / _timeToFade, 1.0)
 			modulate.a = progress
-			if (progress == 1.0):
+			if (_timeSpent >= _timeToFade):
 				_doFade = false
 
 func start_fade() -> void:
 	_doFade = true
+	_timeSpent = 0.0
