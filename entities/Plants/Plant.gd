@@ -10,7 +10,7 @@ var creation_time = 0
 
 var _target_scale = 1.0
 var dragging = false
-var click_radius = 32 # Size of the sprite.
+var click_radius = 70 # Size of the sprite.
 onready var _main = get_tree().get_root().get_node("Main")
 var _has_inited = false
 
@@ -72,7 +72,7 @@ func set_dragging() -> void:
 
 func _input(event):
 	var touchPos = get_canvas_transform().affine_inverse().xform(event.position)
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+	if event is InputEventScreenTouch:
 		if (touchPos - position).length() < click_radius:
 			# Start dragging if the click is on the sprite.
 			if not dragging and event.pressed:
@@ -93,7 +93,7 @@ func _input(event):
 			
 			_main.save_game()
 
-	if event is InputEventMouseMotion and dragging:
+	if dragging:
 		# While dragging, move the sprite with the mouse.
 		position = touchPos
 

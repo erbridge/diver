@@ -10,6 +10,7 @@ var _lightForeground
 var is_darkmode := true
 var _has_inited_garden = false
 onready var _plant = preload("res://entities/Plants/Plant.tscn")
+onready var _debug = get_node("PlantUI/Debug")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -52,6 +53,7 @@ func set_plant_with_scale(pos, scale) -> void:
 	p.position = pos
 	p.start_new_plant()
 	save_game()
+	_debug.text = "p: " + str(pos.x) + ", " + str(pos.y)
 
 func save_game() -> void:
 	var save_game = File.new()
