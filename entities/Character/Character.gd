@@ -40,24 +40,31 @@ var _bob_strength := 0.75
 
 var _unbobbed_position
 var _is_bright_world = false
-var _touchPos
+var _touch_pos
+var _event_pos
+
+var _did_reach_min_rotation = false
 
 ## _unhandled_input if we don't wanna capture UI events
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		_move_to_target = (event as InputEventScreenTouch).pressed
-	_touchPos = get_canvas_transform().affine_inverse().xform(event.position)
+	_event_pos = event.position
 
 func _physics_process(delta: float) -> void:
 	_move(delta)
 	_updateTint()
 
-var _did_reach_min_rotation = false
-
 func _move(delta: float) -> void:
-	var acceleration = _calculate_acceleration(_touchPos)
-	var rotation_acceleration = _calculate_rotation_acceleration(_touchPos)
+	if not _move_to_target:
+		return
+	
+	_touch_pos = get_canvas_transform().affine_inverse().xform(_event_pos)
+	
+	var acceleration = _calculate_acceleration(_touch_pos)
+	var rotation_acceleration = _calculate_rotation_acceleration(_touch_pos)
 	var speed_modifier = 1
+	
 	if _main.is_darkmode:
 		speed_modifier = 0.5
 
@@ -71,11 +78,11 @@ func _move(delta: float) -> void:
 	elif (_main.is_darkmode && position.x > 50):
 		position.x = 50
 	rotate(delta * _rotation_velocity)
-	
+		
 	if ((_main.is_darkmode && position.y < 7500 && rotation < 0) ||
 	   (_main.is_darkmode && position.y < 7500 && rotation > 2) ||
 	   (_main.is_darkmode && position.y < 7500 && rotation < 1 && _did_reach_min_rotation)):
-		var targetPos = _touchPos
+		var targetPos = _touch_pos
 		targetPos.x = 0
 		rotation_acceleration = _calculate_rotation_acceleration(targetPos)
 		_rotation_velocity += delta * rotation_acceleration

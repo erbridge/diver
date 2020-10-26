@@ -17,6 +17,7 @@ script = ExtResource( 7 )
 position = Vector2( 0, 700 )
 
 [node name="Character" parent="." instance=ExtResource( 1 )]
+acceleration_factor = 30.0
 
 [node name="Speck" parent="." instance=ExtResource( 5 )]
 position = Vector2( 300, 300 )
