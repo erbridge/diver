@@ -4,18 +4,18 @@ extends Camera2D
 # The camera position updates during `_process`.
 
 onready var _diver = get_parent().get_node("Character")
-const SCROLL_FACTOR := 600
+const SCROLL_FACTOR := 800
 
 export var target := NodePath()
-export var margin := 400.0
+export var margin := 300.0
 
 onready var _target_node: Node2D = get_node(target)
 
 func _process(delta: float) -> void:
 	if current:
-		_ensure_target_visibility(delta)
 		_update_zoom_level()
 		_restrict_to_allowed_area()
+		_ensure_target_visibility(delta)
 
 func _ensure_target_visibility(delta: float) -> void:
 	if not _target_node:
@@ -25,25 +25,25 @@ func _ensure_target_visibility(delta: float) -> void:
 	margin = min(vportsize.x, vportsize.y) * 0.3
 
 	var viewport_rect = get_viewport_rect()
-	var adjusted_margin = -margin * max(0.75, zoom.x)
+	var adjusted_margin = -margin * min(2, max(0.75, zoom.x))
 	var inner_limits = viewport_rect.grow(adjusted_margin)
 
 	var target_screen_transform = _target_node.get_global_transform_with_canvas()
 	var target_screen_position = target_screen_transform.get_origin()
 
-	if inner_limits.has_point(target_screen_position):
-		return
+#	if inner_limits.has_point(target_screen_position):
+#		return
 
 	if viewport_rect.grow_individual(adjusted_margin, 0, 0, 0).has_point(target_screen_position):
 		position += SCROLL_FACTOR * delta * Vector2.RIGHT
 
-	if viewport_rect.grow_individual(0, adjusted_margin, 0, 0).has_point(target_screen_position):
+	if viewport_rect.grow_individual(0, adjusted_margin * 2.5, 0, 0).has_point(target_screen_position):
 		position += SCROLL_FACTOR * delta * Vector2.DOWN
 
 	if viewport_rect.grow_individual(0, 0, adjusted_margin, 0).has_point(target_screen_position):
 		position += SCROLL_FACTOR * delta * Vector2.LEFT
 
-	if viewport_rect.grow_individual(0, 0, 0, adjusted_margin * 4.0).has_point(target_screen_position):
+	if viewport_rect.grow_individual(0, 0, 0, adjusted_margin * 1.5).has_point(target_screen_position):
 		position += SCROLL_FACTOR * delta * Vector2.UP
 
 func _update_zoom_level() -> void:
